@@ -1,0 +1,38 @@
+{{ define "main" }}
+<section>
+  <h2 class="title">{{ .Title }}</h2>
+  <hr class="purple-divider">  
+  {{ $years := (where .Pages "Section" "blog").GroupByDate "2006"  }}
+    {{ if gt (len $years) 0}}
+    {{ end }}
+       {{ range $index, $year := $years }}
+          <h2 class="title">
+            {{ .Key }} – {{ len .Pages }} {{ if eq (len .Pages) 1 }}post{{ else }}posts{{ end }}
+          </h2>
+      {{ range .Pages }}
+        <article class="post-archive">
+        <h3>
+        <a class="item-title" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        </h3>
+         <p class="post-summary">{{ .Summary }}</p>
+        <div class="post-meta">
+                <img class="inline-icon" src="/images/icons/calendar-days.svg" alt="An icon of a calendar." width="22" height="22">  
+                <time class="post-time">{{ .Date.Format "2 January, 2006" }}</time>
+                <span class="meta-separator">|</span>
+                <img class="post-reading-time" src="/images/icons/clock-regular-full.svg" alt="An icon of a clock." width="22" height="22"> {{ .ReadingTime }} min read</img> 
+                <div class="post-tags">
+                {{ with .GetTerms "tags" }}
+                {{ range . }} 
+                <a class="tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                {{ end }}
+            {{ end }}
+        </div>
+      </article>
+      {{ if lt $index (sub (len $years) 1) }}
+        <hr>
+      {{ end }}
+    </div>
+      {{ end }}
+</section>  
+    {{ end }}
+{{ end }}

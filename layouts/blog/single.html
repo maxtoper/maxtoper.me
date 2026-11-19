@@ -1,0 +1,50 @@
+{{ define "main" }}
+
+<div id="container"></div>
+{{ $lib := resources.Get "js/progressbar.min.js" }}
+{{ $custom := resources.Get "js/progressbar.js" }}
+{{ $bundle := slice $lib $custom | resources.Concat "js/progress-bundle.js" | minify | fingerprint }}
+
+<script src="{{ $bundle.RelPermalink }}" integrity="{{ $bundle.Data.Integrity }}" defer></script>
+
+
+
+
+<section class="post-content"></section>
+        <header>
+            <h2>{{ .Title }}</h2>
+            <div class="post-meta">
+                <img src="/images/icons/calendar-days.svg" alt="An icon of a calendar." width="22" height="22">  
+                <time class="post-time">{{ .Date.Format "2 January, 2006" }}</time>
+                <span class="meta-separator">|</span>
+                <img class="post-reading-time" src="/images/icons/clock-regular-full.svg" alt="An icon of a clock." width="22" height="22"> {{ .ReadingTime }} min read</img> 
+                <div class="post-tags">
+                {{ with .GetTerms "tags" }}
+                {{ range . }} 
+                <a class="tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                {{ end }}
+            {{ end }}
+           </div>
+        </header>
+        <section class="post-content">
+            {{ .Content }}
+        </section>
+        <hr>
+        <nav class="post-navigation">
+            {{ with .PrevInSection }}
+            <a href="{{ .RelPermalink }}" class="post-navigation__prev">
+            <strong><span>← Previous</span></strong>
+            {{ .LinkTitle }}
+            </a>
+        {{ end }}
+
+        {{ with .NextInSection }}
+            <a href="{{ .RelPermalink }}" class="post-navigation__next">
+           <strong><span>Next →</span></strong>
+            {{ .LinkTitle }}
+            </a>
+        {{ end }}
+      </nav>
+
+       
+{{ end }}

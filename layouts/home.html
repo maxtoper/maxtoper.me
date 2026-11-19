@@ -1,0 +1,26 @@
+{{ define "main" }}
+<section>
+<h2>Latest Posts</h2>
+{{ range first 5 (where .Site.RegularPages "Section" "blog") }}
+      <article class="post-archive">
+        <h3>
+        <a class="item-title" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+        </h3>
+         <p class="post-summary">{{ .Summary }}</p>
+        <div class="post-meta">
+                <img class="inline-icon" src="/images/icons/calendar-days.svg" alt="An icon of a calendar." width="22" height="22">  
+                <time class="post-time">{{ .Date.Format "2 January, 2006" }}</time>
+                <span class="meta-separator">|</span>
+                <img class="post-reading-time" src="/images/icons/clock-regular-full.svg" alt="" width="22" height="22"> {{ .ReadingTime }} min read</img> 
+                <div class="post-tags">
+                {{ with .GetTerms "tags" }}
+                {{ range . }} 
+                <a class="tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+                {{ end }}
+            {{ end }}
+           </div>
+      </article>
+      {{ end }}
+</section>
+ <p><a href="/blog/">View all posts →</a></p>
+{{ end }}
